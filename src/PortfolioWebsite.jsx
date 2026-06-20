@@ -156,7 +156,7 @@ const projects = [
     ],
     tech: ["PHP", "IMAP", "POP3", "Networking"],
     live: "https://mail.gprimes.net",
-    github: "https://github.com/raflinurh",
+    github: "https://github.com/raflinrh_",
     status: "Research",
     image: tempmailImg
   },
