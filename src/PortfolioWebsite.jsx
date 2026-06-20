@@ -156,7 +156,7 @@ const projects = [
     ],
     tech: ["PHP", "IMAP", "POP3", "Networking"],
     live: "https://mail.gprimes.net",
-    github: "https://github.com/raflinrh_",
+    github: "https://github.com/raflinurh/temp-mail-imap-stable-version",
     status: "Research",
     image: tempmailImg
   },
@@ -690,7 +690,7 @@ export default function PortfolioWebsite() {
                   { icon: Mail, label: "Email", href: "mailto:rafli.nurhidayat62@gmail.com" },
                   { icon: Github, label: "GitHub", href: "https://github.com/raflinurh" },
                   { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/rafli-nurhidayat-748466288/" },
-                  { icon: Instagram, label: "Instagram", href: "https://instagram.com/raflinurh" }
+                  { icon: Instagram, label: "Instagram", href: "https://instagram.com/raflinrh_" }
                 ].map((social) => (
 
                   <motion.a
