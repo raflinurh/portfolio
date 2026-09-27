@@ -221,7 +221,7 @@ const SpotlightCard = ({ children, className = "" }) => {
   return (
     <div
       onMouseMove={onMouseMove}
-      className={`group relative overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.03] p-8 backdrop-blur-xl transition-all duration-300 hover:border-cyan-400/20 hover:shadow-2xl hover:shadow-cyan-500/10 ${className}`}
+      className={`group relative overflow-hidden rounded-[28px] border border-white/10 bg-[#0a0d1a] p-8 transition-all duration-300 hover:border-cyan-400/20 hover:shadow-2xl hover:shadow-cyan-500/10 ${className}`}
     >
       <motion.div
         className="pointer-events-none absolute -inset-px rounded-[28px] transition duration-300 group-hover:opacity-100"
@@ -246,7 +246,7 @@ const ProfileCard = () => {
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: false }}
+      viewport={{ once: true }}
       className="relative group w-full max-w-[320px] mx-auto aspect-[3/4.2] rounded-[32px] overflow-hidden border border-white/10 bg-white/[0.03] backdrop-blur-xl shadow-2xl"
     >
       {/* Background Image */}
@@ -470,9 +470,9 @@ export default function PortfolioWebsite() {
           <motion.div
             initial="initial"
             whileInView="animate"
-            viewport={{ once: false }}
+            viewport={{ once: true }}
             variants={staggerContainer}
-            className="grid items-center gap-12 rounded-[32px] border border-white/10 bg-white/[0.02] p-8 lg:p-16 shadow-[0_0_80px_rgba(34,211,238,0.05)] backdrop-blur-xl lg:grid-cols-[1.1fr_0.9fr] overflow-hidden"
+            className="grid items-center gap-12 rounded-[32px] border border-white/10 bg-[#0a0d1a] p-8 lg:p-16 shadow-[0_0_80px_rgba(34,211,238,0.05)] lg:grid-cols-[1.1fr_0.9fr] overflow-hidden"
 
           >
             <motion.div variants={fadeIn} className="relative z-10">
@@ -588,7 +588,7 @@ export default function PortfolioWebsite() {
             <motion.div 
               initial="initial"
               whileInView="animate"
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={{ once: true, amount: 0.3 }}
               variants={slideIn}
               className="w-full lg:w-1/3"
             >
@@ -608,7 +608,7 @@ export default function PortfolioWebsite() {
           <motion.div 
             initial="initial"
             whileInView="animate"
-            viewport={{ once: false, amount: 0.8 }}
+            viewport={{ once: true, amount: 0.8 }}
             variants={slideIn}
             className="mb-12"
           >
@@ -648,7 +648,7 @@ export default function PortfolioWebsite() {
               variants={staggerContainer}
               initial="initial"
               whileInView="animate"
-              viewport={{ once: false, amount: 0.1 }}
+              viewport={{ once: true, amount: 0.1 }}
               className="grid grid-cols-3 sm:grid-cols-4 gap-4"
             >
               {stackGrid.map((item) => {
@@ -674,7 +674,7 @@ export default function PortfolioWebsite() {
           <motion.div 
             initial="initial"
             whileInView="animate"
-            viewport={{ once: false, amount: 0.8 }}
+            viewport={{ once: true, amount: 0.8 }}
             variants={slideIn}
             className="mb-12"
           >
@@ -686,7 +686,7 @@ export default function PortfolioWebsite() {
             variants={staggerContainer}
             initial="initial"
             whileInView="animate"
-            viewport={{ once: false, amount: 0.1 }}
+            viewport={{ once: true, amount: 0.1 }}
             className="grid gap-6 md:grid-cols-2 lg:grid-cols-4"
           >
 
@@ -735,7 +735,7 @@ export default function PortfolioWebsite() {
           <motion.div 
             initial="initial"
             whileInView="animate"
-            viewport={{ once: false, amount: 0.8 }}
+            viewport={{ once: true, amount: 0.8 }}
             variants={slideIn}
             className="mb-12 flex items-end justify-between"
           >
@@ -749,7 +749,7 @@ export default function PortfolioWebsite() {
             variants={staggerContainer}
             initial="initial"
             whileInView="animate"
-            viewport={{ once: false, amount: 0.1 }}
+            viewport={{ once: true, amount: 0.1 }}
             className="grid gap-8"
           >
             {projects.map((project, index) => (
