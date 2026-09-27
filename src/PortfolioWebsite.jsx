@@ -209,33 +209,14 @@ const slideIn = {
 };
 
 const SpotlightCard = ({ children, className = "" }) => {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  function onMouseMove({ currentTarget, clientX, clientY }) {
-    const { left, top } = currentTarget.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
-  }
-
   return (
     <div
-      onMouseMove={onMouseMove}
       className={`group relative overflow-hidden rounded-[28px] border border-white/10 bg-[#0a0d1a] p-8 transition-all duration-300 hover:border-cyan-400/20 hover:shadow-2xl hover:shadow-cyan-500/10 ${className}`}
     >
-      <motion.div
-        className="pointer-events-none absolute -inset-px rounded-[28px] transition duration-300 group-hover:opacity-100"
-        style={{
-          background: useMotionTemplate`
-            radial-gradient(
-              650px circle at ${mouseX}px ${mouseY}px,
-              rgba(34, 211, 238, 0.15),
-              transparent 80%
-            )
-          `,
-        }}
-      />
-      {children}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(34,211,238,0.05),transparent_70%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+      <div className="relative z-10">
+        {children}
+      </div>
     </div>
   );
 };
@@ -247,7 +228,7 @@ const ProfileCard = () => {
       initial={{ opacity: 0, scale: 0.9 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
-      className="relative group w-full max-w-[320px] mx-auto aspect-[3/4.2] rounded-[32px] overflow-hidden border border-white/10 bg-white/[0.03] backdrop-blur-xl shadow-2xl"
+      className="relative group w-full max-w-[320px] mx-auto aspect-[3/4.2] rounded-[32px] overflow-hidden border border-white/10 bg-[#0a0d1a] shadow-2xl"
     >
       {/* Background Image */}
       <div className="absolute inset-0">
@@ -346,21 +327,9 @@ export default function PortfolioWebsite() {
     <div className="min-h-screen overflow-hidden bg-[#060816] text-white">
       <div className="pointer-events-none fixed inset-0">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(34,211,238,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(34,211,238,0.08)_1px,transparent_1px)] bg-[size:52px_52px] opacity-30" />
-        <motion.div 
-          animate={{ x: [0, 50, 0], y: [0, 30, 0] }} 
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute left-[-8%] top-[-10%] h-[30rem] w-[30rem] rounded-full bg-cyan-500/20 blur-[120px]" 
-        />
-        <motion.div 
-          animate={{ x: [0, -40, 0], y: [0, 50, 0] }} 
-          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          className="absolute right-[-10%] top-[18%] h-[35rem] w-[35rem] rounded-full bg-fuchsia-500/15 blur-[120px]" 
-        />
-        <motion.div 
-          animate={{ x: [0, 30, 0], y: [0, -40, 0] }} 
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          className="absolute bottom-[-15%] left-[22%] h-[25rem] w-[25rem] rounded-full bg-violet-500/20 blur-[100px]" 
-        />
+        <div className="absolute left-[-8%] top-[-10%] h-[30rem] w-[30rem] rounded-full bg-cyan-500/20 blur-[120px]" />
+        <div className="absolute right-[-10%] top-[18%] h-[35rem] w-[35rem] rounded-full bg-fuchsia-500/15 blur-[120px]" />
+        <div className="absolute bottom-[-15%] left-[22%] h-[25rem] w-[25rem] rounded-full bg-violet-500/20 blur-[100px]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_32%)]" />
       </div>
 
