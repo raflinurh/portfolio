@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate, AnimatePresence } from "framer-motion";
 import {
   Globe,
@@ -26,6 +26,7 @@ import profilePic from "./assets/profile.jpeg";
 import galaprimesImg from "./assets/galaprimes.png";
 import shortlinkImg from "./assets/shortlink.png";
 import tempmailImg from "./assets/tempmail.png";
+import azelozImg from "./assets/azeloz.png";
 import {
   SiPhp,
   SiLaravel,
@@ -39,6 +40,8 @@ import {
   SiGit,
   SiReact,
   SiVite,
+  SiVuedotjs,
+  SiNuxt,
 } from "react-icons/si";
 
 
@@ -82,12 +85,12 @@ const techStack = {
 };
 
 const skillProgress = [
-  { name: "PHP / Laravel", icon: SiLaravel, level: 82 },
-  { name: "MySQL & Database", icon: SiMysql, level: 75 },
-  { name: "API Integration", icon: Globe, level: 72 },
-  { name: "Frontend (Tailwind / Alpine)", icon: SiTailwindcss, level: 55 },
-  { name: "Go (Golang)", icon: SiGo, level: 45 },
-  { name: "React (Learning)", icon: SiReact, level: 10 },
+  { name: "PHP / Laravel", icon: SiLaravel, level: 92 },
+  { name: "Vue / Nuxt", icon: SiNuxt, level: 85 },
+  { name: "MySQL & Database", icon: SiMysql, level: 80 },
+  { name: "API Integration", icon: Globe, level: 78 },
+  { name: "Frontend (Tailwind)", icon: SiTailwindcss, level: 75 },
+  { name: "React", icon: SiReact, level: 50 },
 ];
 
 
@@ -96,16 +99,15 @@ const stackGrid = [
   { name: "PHP", icon: SiPhp },
   { name: "Laravel", icon: SiLaravel },
   { name: "JavaScript", icon: SiJavascript },
+  { name: "Nuxt", icon: SiNuxt },
+  { name: "Vue", icon: SiVuedotjs },
+  { name: "Tailwind CSS", icon: SiTailwindcss },
+  { name: "MySQL", icon: SiMysql },
   { name: "Go", icon: SiGo },
+  { name: "React", icon: SiReact },
   { name: "HTML", icon: SiHtml5 },
   { name: "CSS", icon: SiCss },
-  { name: "Blade", icon: SiLaravel },
-  { name: "Tailwind CSS", icon: SiTailwindcss },
-  { name: "Alpine.js", icon: SiAlpinedotjs },
-  { name: "MySQL", icon: SiMysql },
-  { name: "Vite", icon: SiVite },
   { name: "Git", icon: SiGit },
-  { name: "React", icon: SiReact },
 ];
 
 
@@ -127,6 +129,22 @@ const projects = [
     github: "https://github.com/raflinurh",
     status: "Production",
     image: galaprimesImg
+  },
+  {
+    title: "Azeloz",
+    description:
+      "Platform E-Commerce B2B & Profil Perusahaan penyedia solusi IoT industri cerdas dan sistem akuisisi data (DAQ).",
+    features: [
+      "Midtrans Payment Gateway",
+      "Biteship Logistics API",
+      "B2B Hybrid Smart Cart",
+      "Mini ERP & Role Management"
+    ],
+    tech: ["Nuxt", "Laravel", "Tailwind CSS", "MySQL"],
+    live: "http://azeloz.com/",
+    github: "",
+    status: "Production",
+    image: azelozImg
   },
   {
     title: "GPrimes Shortlink",
@@ -166,18 +184,28 @@ const projects = [
 
 
 const fadeIn = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6 }
+  initial: { opacity: 0, y: 30, scale: 0.9 },
+  animate: { 
+    opacity: 1, 
+    y: 0, 
+    scale: 1,
+    transition: { type: "spring", stiffness: 120, damping: 15 } 
+  }
 };
 
 const staggerContainer = {
   initial: {},
   animate: {
     transition: {
-      staggerChildren: 0.1
+      staggerChildren: 0.1,
+      delayChildren: 0.1
     }
   }
+};
+
+const slideIn = {
+  initial: { opacity: 0, x: -40 },
+  animate: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 100, damping: 20 } }
 };
 
 const SpotlightCard = ({ children, className = "" }) => {
@@ -193,7 +221,7 @@ const SpotlightCard = ({ children, className = "" }) => {
   return (
     <div
       onMouseMove={onMouseMove}
-      className={`group relative overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.03] p-8 backdrop-blur-xl transition-all duration-300 hover:border-white/20 ${className}`}
+      className={`group relative overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.03] p-8 backdrop-blur-xl transition-all duration-300 hover:border-cyan-400/20 hover:shadow-2xl hover:shadow-cyan-500/10 ${className}`}
     >
       <motion.div
         className="pointer-events-none absolute -inset-px rounded-[28px] transition duration-300 group-hover:opacity-100"
@@ -218,7 +246,7 @@ const ProfileCard = () => {
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
+      viewport={{ once: false }}
       className="relative group w-full max-w-[320px] mx-auto aspect-[3/4.2] rounded-[32px] overflow-hidden border border-white/10 bg-white/[0.03] backdrop-blur-xl shadow-2xl"
     >
       {/* Background Image */}
@@ -268,6 +296,42 @@ const ProfileCard = () => {
 
 export default function PortfolioWebsite() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ['about', 'skills', 'experience', 'projects', 'contact'];
+      
+      let current = "";
+      
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          // Trigger only when the section's top is near the navbar
+          const rect = element.getBoundingClientRect();
+          if (rect.top <= 250) {
+            current = section;
+          }
+        }
+      }
+      
+      // Force contact if scrolled to the absolute bottom of the page
+      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
+        current = "contact";
+      }
+
+      // Clear if at top
+      if (window.scrollY < 100) {
+        current = "";
+      }
+
+      setActiveSection(current);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navLinks = [
     { name: 'About', href: '#about' },
@@ -282,9 +346,21 @@ export default function PortfolioWebsite() {
     <div className="min-h-screen overflow-hidden bg-[#060816] text-white">
       <div className="pointer-events-none fixed inset-0">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(34,211,238,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(34,211,238,0.08)_1px,transparent_1px)] bg-[size:52px_52px] opacity-30" />
-        <div className="absolute left-[-8%] top-[-10%] h-80 w-80 rounded-full bg-cyan-500/18 blur-3xl" />
-        <div className="absolute right-[-10%] top-[18%] h-96 w-96 rounded-full bg-fuchsia-500/14 blur-3xl" />
-        <div className="absolute bottom-[-15%] left-[22%] h-72 w-72 rounded-full bg-violet-500/16 blur-3xl" />
+        <motion.div 
+          animate={{ x: [0, 50, 0], y: [0, 30, 0] }} 
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute left-[-8%] top-[-10%] h-[30rem] w-[30rem] rounded-full bg-cyan-500/20 blur-[120px]" 
+        />
+        <motion.div 
+          animate={{ x: [0, -40, 0], y: [0, 50, 0] }} 
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          className="absolute right-[-10%] top-[18%] h-[35rem] w-[35rem] rounded-full bg-fuchsia-500/15 blur-[120px]" 
+        />
+        <motion.div 
+          animate={{ x: [0, 30, 0], y: [0, -40, 0] }} 
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute bottom-[-15%] left-[22%] h-[25rem] w-[25rem] rounded-full bg-violet-500/20 blur-[100px]" 
+        />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_32%)]" />
       </div>
 
@@ -297,20 +373,24 @@ export default function PortfolioWebsite() {
           <div className="flex items-center gap-2">
             <div className="h-2 w-2 rounded-full bg-cyan-400 animate-pulse" />
             <div className="text-[10px] sm:text-xs font-bold tracking-[0.3em] text-white uppercase">
-              RAFLI <span className="text-cyan-400">//</span> DEV
+              RAFLI <span className="text-cyan-400">//</span> N
             </div>
           </div>
 
           <div className="hidden items-center gap-8 text-[11px] font-medium tracking-widest text-white/50 uppercase md:flex">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="transition-all hover:text-cyan-400 hover:tracking-[0.4em]"
-              >
-                {link.name}
-              </a>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.href.substring(1);
+              return (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className={`relative group transition-colors hover:text-cyan-400 ${isActive ? 'text-cyan-400' : ''}`}
+                >
+                  {link.name}
+                  <span className={`absolute -bottom-1.5 left-0 h-[2px] bg-cyan-400 transition-all duration-300 group-hover:w-full group-hover:shadow-[0_0_10px_rgba(34,211,238,0.5)] ${isActive ? 'w-full shadow-[0_0_10px_rgba(34,211,238,0.5)]' : 'w-0'}`} />
+                </a>
+              );
+            })}
           </div>
 
           <button
@@ -349,19 +429,23 @@ export default function PortfolioWebsite() {
                 </div>
 
                 <div className="flex flex-col gap-6">
-                  {navLinks.map((link, i) => (
-                    <motion.a
-                      key={link.name}
-                      href={link.href}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.1 }}
-                      onClick={() => setIsMenuOpen(false)}
-                      className="text-2xl font-bold tracking-tight hover:text-cyan-400"
-                    >
-                      {link.name}
-                    </motion.a>
-                  ))}
+                  {navLinks.map((link, i) => {
+                    const isActive = activeSection === link.href.substring(1);
+                    return (
+                      <motion.a
+                        key={link.name}
+                        href={link.href}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.1 }}
+                        onClick={() => setIsMenuOpen(false)}
+                        className={`relative group inline-block text-2xl font-bold tracking-tight hover:text-cyan-400 w-fit ${isActive ? 'text-cyan-400' : ''}`}
+                      >
+                        {link.name}
+                        <span className={`absolute -bottom-1 left-0 h-[2px] bg-cyan-400 transition-all duration-300 group-hover:w-full group-hover:shadow-[0_0_10px_rgba(34,211,238,0.5)] ${isActive ? 'w-full shadow-[0_0_10px_rgba(34,211,238,0.5)]' : 'w-0'}`} />
+                      </motion.a>
+                    );
+                  })}
                 </div>
 
                 <div className="absolute bottom-8 left-8 right-8">
@@ -386,39 +470,57 @@ export default function PortfolioWebsite() {
           <motion.div
             initial="initial"
             whileInView="animate"
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             variants={staggerContainer}
-            className="grid items-center gap-12 rounded-[32px] border border-white/10 bg-white/[0.02] p-8 lg:p-16 shadow-2xl backdrop-blur-3xl lg:grid-cols-[1.1fr_0.9fr] overflow-hidden"
+            className="grid items-center gap-12 rounded-[32px] border border-white/10 bg-white/[0.02] p-8 lg:p-16 shadow-[0_0_80px_rgba(34,211,238,0.05)] backdrop-blur-xl lg:grid-cols-[1.1fr_0.9fr] overflow-hidden"
 
           >
             <motion.div variants={fadeIn} className="relative z-10">
-              <motion.div
+              {/* <motion.div
                 whileHover={{ scale: 1.05 }}
                 className="mb-8 inline-flex items-center gap-3 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-5 py-2 text-[10px] uppercase font-bold tracking-[0.4em] text-cyan-300"
               >
                 <Sparkles className="h-4 w-4" />
                 LEARN · BUILD · EXPLORE
-              </motion.div>
+              </motion.div> */}
 
-              <h1 className="text-4xl font-bold leading-[1.1] tracking-tight sm:text-6xl lg:text-8xl break-words">
-                Hi, <br />
-                <span className="relative inline-block mt-2">
-                  <span className="relative z-10 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent italic">
-                    I'm Rafli.
-                  </span>
-
-                  <motion.span
-                    initial={{ width: 0 }}
-                    whileInView={{ width: '100%' }}
-                    transition={{ delay: 0.5, duration: 0.8 }}
-                    className="absolute bottom-1 sm:bottom-4 left-0 h-[4px] sm:h-[8px] bg-cyan-400/20 -rotate-1"
-                  />
-                </span>
+              <h1 className="text-6xl font-black leading-[0.95] tracking-tighter sm:text-7xl lg:text-[110px] break-words drop-shadow-2xl">
+                <motion.span
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  className="inline-block"
+                >
+                  <motion.span 
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    className="inline-block text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/30"
+                  >
+                    Hi,
+                  </motion.span>
+                </motion.span>
+                <br />
+                <motion.span
+                  animate={{ y: [0, 8, 0] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                  className="inline-block"
+                >
+                  <motion.span 
+                    initial={{ opacity: 0, filter: "blur(20px)", scale: 0.85 }}
+                    animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
+                    transition={{ duration: 1.5, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                    className="relative inline-block mt-2 lg:mt-4 group"
+                  >
+                    <span className="relative z-10 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-[length:200%_auto] animate-gradient bg-clip-text text-transparent italic drop-shadow-[0_0_30px_rgba(34,211,238,0.5)] pr-4">
+                      I'm Rafli.
+                    </span>
+                  </motion.span>
+                </motion.span>
               </h1>
 
               <p className="mt-6 sm:mt-8 max-w-xl text-base sm:text-lg leading-relaxed text-white/50 md:text-xl">
-                Seorang <span className="text-white font-medium">Mahasiswa & Aspiring Full Stack Developer</span> yang
-                senang "ngulik" di balik layar. Berfokus pada pembangunan sistem yang efisien dengan PHP & Laravel.
+                <span className="text-white font-medium">Full-Stack Developer</span> yang berfokus membangun produk digital <span className="text-cyan-400 font-bold drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]">production-ready</span>. 
+                Mengubah kompleksitas bisnis menjadi arsitektur sistem yang efisien dan andal.
               </p>
 
 
@@ -428,7 +530,7 @@ export default function PortfolioWebsite() {
                   href="#projects"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="group relative flex items-center justify-center gap-3 rounded-full bg-white px-8 py-4 text-sm font-bold text-black transition-all hover:bg-cyan-400"
+                  className="group relative flex items-center justify-center gap-3 rounded-full bg-white px-8 py-4 text-sm font-bold text-black transition-all hover:bg-cyan-400 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(34,211,238,0.6)]"
                 >
                   Explore Work
                   <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -436,9 +538,9 @@ export default function PortfolioWebsite() {
 
                 <motion.a
                   href="#contact"
-                  whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.08)" }}
+                  whileHover={{ scale: 1.02, backgroundColor: "rgba(34,211,238,0.1)" }}
                   whileTap={{ scale: 0.98 }}
-                  className="flex items-center justify-center gap-3 rounded-full border border-white/20 px-8 py-4 text-sm font-bold text-white transition-all"
+                  className="flex items-center justify-center gap-3 rounded-full border border-white/20 px-8 py-4 text-sm font-bold text-white transition-all hover:border-cyan-400 hover:text-cyan-400"
                 >
                   Let's Talk
                 </motion.a>
@@ -463,8 +565,9 @@ export default function PortfolioWebsite() {
               className="lg:block relative w-full flex justify-center"
             >
               {/* Lanyard for Desktop */}
-              <div className="hidden lg:block w-full h-[600px] relative rounded-3xl border border-white/10 bg-white/[0.02] overflow-hidden">
+              <div className="hidden lg:block w-full h-[600px] relative rounded-3xl border border-white/10 bg-white/[0.02] overflow-hidden shadow-[inset_0_0_40px_rgba(34,211,238,0.05)]">
                 <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/10 to-purple-500/10 blur-[100px] opacity-50" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.15),transparent_60%)]" />
                 <Lanyard position={[0, 0, 20]} gravity={[0, -40, 0]} />
               </div>
 
@@ -480,17 +583,20 @@ export default function PortfolioWebsite() {
           </motion.div>
         </section>
 
-        <section id="about" className="mt-12">
+        <section id="about" className="mt-12 scroll-mt-32">
           <SpotlightCard className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start lg:items-center">
-            <div className="w-full lg:w-1/3">
+            <motion.div 
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: false, amount: 0.3 }}
+              variants={slideIn}
+              className="w-full lg:w-1/3"
+            >
               <span className="text-[10px] font-bold tracking-[0.5em] text-cyan-400 uppercase">My Story</span>
               <h2 className="mt-4 text-3xl lg:text-4xl font-bold italic">The Journey</h2>
-            </div>
+            </motion.div>
             <div className="w-full lg:w-2/3 text-base lg:text-lg leading-relaxed text-white/60">
-              Bagi saya, pemrograman itu seperti teka-teki. Saya mulai dari rasa penasaran gimana sebuah sistem bisa
-              otomatis, dan akhirnya jatuh cinta dengan proses <span className="text-white italic">ngulik</span> logic di backend.
-              Saat ini saya masih berstatus mahasiswa yang terus bereksplorasi, membangun project produksi seperti
-              <span className="text-cyan-400 font-medium"> Galaprimes</span>, sambil menyiapkan diri untuk jadi profesional yang handal.
+              Bagi saya, software engineering adalah tentang memecahkan masalah bisnis dengan kode yang elegan. Saya memiliki rekam jejak dalam membangun sistem <span className="text-white font-medium">production-grade</span> dari nol, mengubah ide kompleks menjadi arsitektur digital yang scalable dan andal.
             </div>
           </SpotlightCard>
         </section>
@@ -498,11 +604,17 @@ export default function PortfolioWebsite() {
 
 
 
-        <section id="skills" className="mt-12">
-          <div className="mb-12">
+        <section id="skills" className="mt-12 scroll-mt-32">
+          <motion.div 
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: false, amount: 0.8 }}
+            variants={slideIn}
+            className="mb-12"
+          >
             <span className="text-[10px] font-bold tracking-[0.5em] text-cyan-400 uppercase">Technologies</span>
             <h2 className="mt-4 text-4xl font-bold tracking-tight">The Stack.</h2>
-          </div>
+          </motion.div>
 
           <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
             {/* LEFT: PROGRESS */}
@@ -532,11 +644,18 @@ export default function PortfolioWebsite() {
             </div>
 
             {/* RIGHT: GRID */}
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-4">
+            <motion.div 
+              variants={staggerContainer}
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: false, amount: 0.1 }}
+              className="grid grid-cols-3 sm:grid-cols-4 gap-4"
+            >
               {stackGrid.map((item) => {
                 const Icon = item.icon;
                 return (
                   <motion.div
+                    variants={fadeIn}
                     key={item.name}
                     whileHover={{ scale: 1.05, y: -5 }}
                     className="flex flex-col items-center justify-center gap-4 rounded-3xl border border-white/10 bg-white/[0.02] p-6 transition-colors hover:bg-white/[0.05] hover:border-cyan-400/30"
@@ -546,18 +665,30 @@ export default function PortfolioWebsite() {
                   </motion.div>
                 );
               })}
-            </div>
+            </motion.div>
           </div>
         </section>
 
 
-        <section id="experience" className="mt-12">
-          <div className="mb-12">
+        <section id="experience" className="mt-12 scroll-mt-32">
+          <motion.div 
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: false, amount: 0.8 }}
+            variants={slideIn}
+            className="mb-12"
+          >
             <span className="text-[10px] font-bold tracking-[0.5em] text-cyan-400 uppercase">Learning Path</span>
             <h2 className="mt-4 text-4xl font-bold tracking-tight">Core Focus.</h2>
-          </div>
+          </motion.div>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <motion.div 
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: false, amount: 0.1 }}
+            className="grid gap-6 md:grid-cols-2 lg:grid-cols-4"
+          >
 
             {[
               {
@@ -585,37 +716,47 @@ export default function PortfolioWebsite() {
                 color: "from-pink-500/20 to-orange-500/20"
               }
             ].map((item, index) => (
-
-
-
-
-              <SpotlightCard key={item.title}>
-                <div className={`mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${item.color}`}>
-                  <item.icon className="h-7 w-7 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold">{item.title}</h3>
-                <p className="mt-4 text-sm leading-7 text-white/50">
-                  {item.desc}
-                </p>
-              </SpotlightCard>
+              <motion.div key={item.title} variants={fadeIn} className="h-full">
+                <SpotlightCard className="h-full">
+                  <div className={`mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${item.color}`}>
+                    <item.icon className="h-7 w-7 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold">{item.title}</h3>
+                  <p className="mt-4 text-sm leading-7 text-white/50">
+                    {item.desc}
+                  </p>
+                </SpotlightCard>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </section>
 
-        <section id="projects" className="mt-12">
-          <div className="mb-12 flex items-end justify-between">
+        <section id="projects" className="mt-12 scroll-mt-32">
+          <motion.div 
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: false, amount: 0.8 }}
+            variants={slideIn}
+            className="mb-12 flex items-end justify-between"
+          >
             <div>
               <span className="text-[10px] font-bold tracking-[0.5em] text-cyan-400 uppercase">Selected Works</span>
               <h2 className="mt-4 text-4xl font-bold tracking-tight">Real World Impact.</h2>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="grid gap-8">
+          <motion.div 
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: false, amount: 0.1 }}
+            className="grid gap-8"
+          >
             {projects.map((project, index) => (
-              <SpotlightCard
-                key={project.title}
-                className="group !p-4 lg:!p-8"
-              >
+              <motion.div key={project.title} variants={fadeIn}>
+                <SpotlightCard
+                  className="group !p-4 lg:!p-8"
+                >
                 <div className="flex flex-col lg:flex-row gap-12">
                   <div className="relative aspect-video lg:w-1/2 overflow-hidden rounded-2xl border border-white/10">
                     <img
@@ -656,36 +797,37 @@ export default function PortfolioWebsite() {
                       </div>
                     </div>
 
-                    <div className="flex gap-4">
+                    <div className="flex flex-wrap gap-3 sm:gap-4">
                       <a
                         href={project.live}
-                        className="flex items-center gap-2 px-6 py-3 bg-white text-black rounded-full text-sm font-bold hover:bg-cyan-400 transition-colors"
+                        className="flex items-center gap-2 px-4 py-2 sm:px-6 sm:py-3 bg-white text-black rounded-full text-xs sm:text-sm font-bold hover:bg-cyan-400 transition-colors whitespace-nowrap"
                       >
-                        Launch Project <ExternalLink className="h-4 w-4" />
+                        Launch Project <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4" />
                       </a>
                       <a
                         href={project.github}
-                        className="flex items-center gap-2 px-6 py-3 border border-white/20 rounded-full text-sm font-bold hover:bg-white/10 transition-colors"
+                        className="flex items-center gap-2 px-4 py-2 sm:px-6 sm:py-3 border border-white/20 rounded-full text-xs sm:text-sm font-bold hover:bg-white/10 transition-colors whitespace-nowrap"
                       >
-                        GitHub <Github className="h-4 w-4" />
+                        GitHub <Github className="h-3 w-3 sm:h-4 sm:w-4" />
                       </a>
                     </div>
                   </div>
                 </div>
-              </SpotlightCard>
+                </SpotlightCard>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </section>
 
 
-        <section className="mt-12 py-12">
+        <section id="contact" className="mt-12 py-12 scroll-mt-32">
           <SpotlightCard className="!bg-gradient-to-br from-cyan-500/10 via-transparent to-purple-500/10 border-white/10 py-16">
-            <div id="contact" className="max-w-4xl mx-auto text-center">
+            <div className="max-w-4xl mx-auto text-center px-4">
               <span className="text-[10px] font-bold tracking-[0.6em] text-cyan-400 uppercase">Ready to Start?</span>
-              <h2 className="mt-8 text-5xl lg:text-7xl font-bold tracking-tight mb-8">Let's create something <br /><span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent italic">extraordinary.</span></h2>
-              <p className="text-xl text-white/40 mb-12">Saya selalu terbuka untuk kolaborasi menarik dan tantangan baru.</p>
+              <h2 className="mt-6 sm:mt-8 text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight mb-6 sm:mb-8">Let's create something <br /><span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-blue-400 bg-[length:200%_auto] animate-gradient bg-clip-text text-transparent italic">extraordinary.</span></h2>
+              <p className="text-lg sm:text-xl text-white/40 mb-10 sm:mb-12">Saya selalu terbuka untuk kolaborasi menarik dan tantangan baru.</p>
 
-              <div className="flex flex-wrap justify-center gap-6">
+              <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-3 sm:gap-6">
                 {[
                   { icon: Mail, label: "Email", href: "mailto:rafli.nurhidayat62@gmail.com" },
                   { icon: Github, label: "GitHub", href: "https://github.com/raflinurh" },
@@ -697,10 +839,10 @@ export default function PortfolioWebsite() {
                     key={social.label}
                     href={social.href}
                     whileHover={{ y: -5 }}
-                    className="flex items-center gap-3 px-6 py-3 rounded-2xl bg-white/5 border border-white/10 hover:border-cyan-400/50 hover:bg-white/10 transition-all"
+                    className="flex items-center gap-2 sm:gap-3 px-4 py-2 sm:px-6 sm:py-3 rounded-2xl bg-white/5 border border-white/10 hover:border-cyan-400/50 hover:bg-white/10 transition-all"
                   >
-                    <social.icon className="h-5 w-5 text-cyan-400" />
-                    <span className="text-sm font-bold uppercase tracking-widest">{social.label}</span>
+                    <social.icon className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-400" />
+                    <span className="text-[10px] sm:text-sm font-bold uppercase tracking-widest">{social.label}</span>
                   </motion.a>
                 ))}
               </div>
@@ -708,7 +850,7 @@ export default function PortfolioWebsite() {
           </SpotlightCard>
 
           <div className="mt-12 text-center text-white/20 text-[10px] uppercase font-bold tracking-[0.5em]">
-            © 2025 RAFLI DEV · ALL RIGHTS RESERVED
+            © 2025 RAFLI N · ALL RIGHTS RESERVED
           </div>
         </section>
       </main>
